@@ -7,3 +7,6 @@
 [submodule "soundfont-player"]
 	path = soundfont-player
 	url = https://github.com/danigb/soundfont-player
+[submodule "database"]
+	path = database
+	url = https://github.com/scoresharp/database.git
