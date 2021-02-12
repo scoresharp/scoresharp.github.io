@@ -67,7 +67,7 @@ const fetch = async function (url, options) {
 
 // Token as taken from the static hosted source code
 const token = '38fb9efaae51b0c83b5bb5791a698b48292129e7'
-const downloadLimit = 100
+const downloadLimit = 10
 let downloadCount = 0
 
 /**
@@ -129,7 +129,7 @@ const fetchSearch = async function (url, page = 0) {
     }
     downloadCount++
     index[score.id] = true
-    await fetchScore(score.id)
+    await fetchScore(score)
   }))
   if (downloadCount < downloadLimit && page < 100) {
     await fetchSearch(url, page + 1)
