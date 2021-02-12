@@ -11,7 +11,7 @@ const {
 
 const databasePath = path.resolve(__dirname, '../database/')
 
-const clients = {}
+// const clients = {}
 /**
  * A very simple HTTP client for executing GET requests
  * @param {string} url The url to be fetched
@@ -22,12 +22,14 @@ const fetch = async function (url, options) {
   const parsedUrl = new URL(url)
 
   return new Promise((resolve, reject) => {
+    /*
     if (!clients[parsedUrl.origin]) {
       clients[parsedUrl.origin] = http2.connect(parsedUrl.origin)
     }
-    const client = http2.connect(parsedUrl.origin) || clients[parsedUrl.origin]
+    */
+    const client = http2.connect(parsedUrl.origin) // || clients[parsedUrl.origin]
     client.on('error', (err) => {
-      delete clients[parsedUrl.origin]
+      // delete clients[parsedUrl.origin]
       reject(err)
     })
 
@@ -70,6 +72,16 @@ const token = '38fb9efaae51b0c83b5bb5791a698b48292129e7'
 const downloadLimit = 10
 let downloadCount = 0
 
+let ensureSongsFolderProm
+const ensureSongsFolder = async function () {
+  if (ensureSongsFolderProm) { return ensureSongsFolderProm }
+  const songsPath = path.resolve(databasePath, 'songs')
+  ensureSongsFolderProm = fs.promises.mkdir(songsPath)
+    .catch(() => { }) // Ignore if folder already exists
+    .then(() => songsPath)
+  return ensureSongsFolderProm
+}
+
 /**
  * Fetches the MIDI file of a MuseScore score
  * @param {Object} score The score metadata
@@ -82,7 +94,8 @@ const fetchScore = async function (score) {
       [HTTP2_HEADER_AUTHORIZATION]: token
     }
   })
-  const filePath = path.resolve(databasePath, 'songs', `${score.id}`)
+  const songsPath = await ensureSongsFolder()
+  const filePath = path.resolve(songsPath, `${score.id}`)
   await fetch(
     JSON.parse(body).info.url,
     {
@@ -150,11 +163,12 @@ const searchUrl = encodeURI(
 const errors = []
 fetchSearch(searchUrl)
   .catch(err => {
-    errors.push(err)
     console.error(err.stack)
+    errors.push(err)
   })
-  .then(async () => {
-    await fs.promises.writeFile(
+  .then(() => {
+    console.log('Writing Index to disk')
+    return fs.promises.writeFile(
       path.resolve(databasePath, 'songIndex.json'),
       JSON.stringify(Object.keys(index))
     )
@@ -165,11 +179,11 @@ fetchSearch(searchUrl)
     return git.push('database', process.env.DATABASE_TOKEN)
   })
   .catch(err => {
-    errors.push(err)
     console.error(err.stack)
+    errors.push(err)
   })
   .then(() => {
-    Object.keys(clients).forEach(k => clients[k].close())
+    // Object.keys(clients).forEach(k => clients[k].close())
 
     // Check errors and reflect status
     if (errors.length > 0) {
