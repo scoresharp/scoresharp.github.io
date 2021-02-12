@@ -9,7 +9,7 @@ const push = async function (dir) {
   dir = dir || 'scoresharp.github.io.git'
   let ret = await exec('git add --all', options)
   ret = await exec(`git -c 'user.name=CI' -c 'user.email=CI@github.com' commit -m 'Push update to ${dir} at ${Date.now()}'`, options)
-  ret = await exec(`git push 'https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/scoresharp/${dir}.git' HEAD:main`, options)
+  ret = await exec(`git push 'https://${process.env.GITHUB_ACTOR}:${process.env.GITHUB_TOKEN}@github.com/scoresharp/scoresharp.github.io.git' HEAD:test`)
   console.log(ret.stdout)
   console.error(ret.stderr)
 }
