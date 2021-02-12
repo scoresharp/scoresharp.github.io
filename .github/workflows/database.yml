@@ -1,0 +1,26 @@
+name: Database
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Prepare secrets
+
+      - run: npm ci
+      - name: Execute database validation and updates
+        env:
+          DATABASE_TOKEN: ${{ secrets.DATABASE_TOKEN }}
+        run: npm run database
