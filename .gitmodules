@@ -1,0 +1,9 @@
+[submodule "Leland"]
+	path = Leland
+	url = https://github.com/MuseScoreFonts/Leland.git
+[submodule "midi-parser-js"]
+	path = midi-parser-js
+	url = https://github.com/colxi/midi-parser-js.git
+[submodule "soundfont-player"]
+	path = soundfont-player
+	url = https://github.com/danigb/soundfont-player

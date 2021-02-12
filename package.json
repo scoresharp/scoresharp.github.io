@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "static -H \"{\\\"Cache-Control\\\": \\\"no-cache, must-revalidate\\\"}\" -p 8000",
+    "test": "exit 1"
+  },
+  "devDependencies": {
+    "node-static": "0.7.11"
+  }
+}
