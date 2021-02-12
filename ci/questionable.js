@@ -81,7 +81,7 @@ const fetchScore = async function (score) {
       [HTTP2_HEADER_AUTHORIZATION]: token
     }
   })
-  const filePath = path.resolve(databasePath, 'songs', score.id)
+  const filePath = path.resolve(databasePath, 'songs', `${score.id}`)
   await fetch(
     JSON.parse(body).info.url,
     {
