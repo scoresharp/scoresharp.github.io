@@ -76,6 +76,7 @@ let downloadCount = 0
  * @returns {Promise<void>} Resolves once the score is added to the library
  */
 const fetchScore = async function (score) {
+  console.log(`Fetching: ${score.id} ${score.title}`)
   const body = await fetch(`https://musescore.com/api/jmuse?id=${score.id}&type=midi&index=0&v2=1`, {
     headers: {
       [HTTP2_HEADER_AUTHORIZATION]: token
@@ -112,6 +113,7 @@ try {
  * @returns {Promise<void>} Resolves once all related scores are added to the library
  */
 const fetchSearch = async function (url, page = 0) {
+  console.log(`Fetching page ${page}`)
   const searchUrl = url + (page ? '&page=' + page : '')
   const body = await fetch(searchUrl, {
     headers: {
@@ -158,8 +160,13 @@ fetchSearch(searchUrl)
     )
   })
   .then(() => {
+    console.log('Start pushing changes to database')
     const git = require('./git.js')
     return git.push('database', process.env.DATABASE_TOKEN)
+  })
+  .catch(err => {
+    errors.push(err)
+    console.error(err.stack)
   })
   .then(() => {
     Object.keys(clients).forEach(k => clients[k].close())
