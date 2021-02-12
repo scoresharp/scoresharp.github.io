@@ -23,5 +23,5 @@ jobs:
       - run: npm ci
       - name: Execute database validation and updates
         env:
-          DATABASE_TOKEN: ${{ secrets.DATABASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run database

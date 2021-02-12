@@ -176,7 +176,7 @@ fetchSearch(searchUrl)
   .then(() => {
     console.log('Start pushing changes to database')
     const git = require('./git.js')
-    return git.push('database', process.env.DATABASE_TOKEN)
+    return git.push('database')
   })
   .catch(err => {
     console.error(err.stack)
