@@ -62,8 +62,14 @@ const test = async function () {
   ]
 
   if (os.platform() === 'linux') {
+    console.log('Detected Linux adding special flags')
     chromeArgs.push('--disable-gpu')
     chromeArgs.push('--no-sandbox')
+  }
+
+  if (process.env.PORT) {
+    console.log('Detected PORT for testing purposed running headless')
+    chromeArgs.push('--headless')
   }
 
   const { stdout, stderr } = await exec(chromeArgs.join(' '))
