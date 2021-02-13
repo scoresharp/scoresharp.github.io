@@ -139,7 +139,7 @@ const serve = async function () {
   })
 
   return new Promise((resolve, reject) => {
-    server.listen(443, err => {
+    server.listen(Number.parseInt(process.env.PORT, 10) || 443, err => {
       if (err) {
         return reject(err)
       }

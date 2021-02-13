@@ -33,5 +33,7 @@ jobs:
       - run: chrome --version
 
       # Execute tests
-      - run: npm ci
+      # - run: npm ci
       - run: npm test
+        env:
+          PORT: "8080"

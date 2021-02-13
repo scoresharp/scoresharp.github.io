@@ -14,7 +14,7 @@ const test = async function () {
 
   const chromeArgs = [
     'chrome',
-    'https://localhost/test/test.html',
+    `"https://localhost${process.env.PORT ? (':' + process.env.PORT) : ''}/test/test.html"`,
     '--test-type',
     '--ignore-certificate-errors',
     '--start-maximized',
