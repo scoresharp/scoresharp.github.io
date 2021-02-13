@@ -1,10 +1,7 @@
 {
   "scripts": {
-    "start": "static -H \"{\\\"Cache-Control\\\": \\\"no-cache, must-revalidate\\\"}\" -p 8000",
-    "test": "exit 1",
+    "start": "./test/serve.js",
+    "test": "node ./test/index.js",
     "database": "node ./ci/index.js"
-  },
-  "devDependencies": {
-    "node-static": "0.7.11"
   }
 }
