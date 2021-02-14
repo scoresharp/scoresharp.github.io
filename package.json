@@ -1,7 +1,7 @@
 {
   "scripts": {
-    "start": "./test/serve.js",
     "test": "node ./test/index.js",
+    "start": "node ./test/serve.js",
     "database": "node ./ci/index.js"
   }
 }

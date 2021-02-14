@@ -115,7 +115,7 @@ const fetchScore = async function (score) {
 const index = {}
 try {
   // Load exiting index
-  const ids = require('../database/songIndex.json')
+  const ids = require('../database/songs/index.json')
   ids.forEach(id => { index[id] = true })
 } catch (e) { }
 
@@ -168,10 +168,21 @@ fetchSearch(searchUrl)
   })
   .then(() => {
     console.log('Writing Index to disk')
-    return fs.promises.writeFile(
-      path.resolve(databasePath, 'songIndex.json'),
-      JSON.stringify(Object.keys(index))
-    )
+    // TODO: split index into pages
+    const keys = Object.keys(index)
+    return Promise.all([
+      fs.promises.writeFile(
+        path.resolve(databasePath, 'songs/index.json'),
+        JSON.stringify(keys)
+      ),
+      fs.promises.writeFile(
+        path.resolve(databasePath, 'songs/index.metadata.json'),
+        JSON.stringify({
+          length: keys.length,
+          pages: 1
+        })
+      )
+    ])
   })
   .then(() => {
     console.log('Start pushing changes to database')
